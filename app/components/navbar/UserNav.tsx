@@ -1,13 +1,20 @@
 'use client';
 
-import { useState } from "react";
+import { use, useState } from "react";
 
 import MenuLink from "./MenuLink";
+import LogoutButton from "../LogoutButton";
 
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useSignupModal from "@/app/hooks/useSignupModal";
 
-const UserNav = () => {
+interface UserNavProps {
+    userId?: string | null;
+}
+
+const UserNav: React.FC<UserNavProps> = ({
+    userId
+}) => {
     const loginModal = useLoginModal();
     const signupModal = useSignupModal();
 
@@ -30,25 +37,32 @@ const UserNav = () => {
 
             {isOpen && (
                 <div className="w-[220px] absolute top-[60px] right-0 bg-white border rounded-xl shadow-md flex flex-col cursor-pointer">
-                    <MenuLink 
-                        label='Log in'
-                        onClick={() => {
-                            console.log("Clicked Log in button!")
+                    {userId ? (
+                        <LogoutButton />
+                    ) : (
+                        <>
+                            <MenuLink 
+                                label='Log in'
+                                onClick={() => {
+                                    console.log("Clicked Log in button!")
 
-                            setIsOpen(false)
-                            loginModal.open()
-                        }}
-                    />
+                                    setIsOpen(false)
+                                    loginModal.open()
+                                }}
+                            />
 
-                    <MenuLink 
-                        label='Sign up'
-                        onClick={() => {
-                            console.log("Clicked Sign up button!")
+                            <MenuLink 
+                                label='Sign up'
+                                onClick={() => {
+                                    console.log("Clicked Sign up button!")
 
-                            setIsOpen(false)
-                            signupModal.open()
-                        }}
-                    />
+                                    setIsOpen(false)
+                                    signupModal.open()
+                                }}
+                            />
+                        </>
+                    )}
+                    
                 </div>
             )}
         </div>
